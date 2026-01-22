@@ -55,7 +55,7 @@ bot, applications.commands
 View Channels, Manage Messages, Read Message History
 5. Use the generated URL at the bottom of the page to invite the bot to the desired server
 
-The next part is to setup whatever you run the bot on
+The next part is to setup whatever you run the bot on, this works on Debian 13.
 
 1. Install python, minimum 3.9, newest recommended
 2. Install the discord package via pip (pip install discord)
