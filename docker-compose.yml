@@ -1,0 +1,9 @@
+services:
+  discord-cleanup-bot:
+    build: .
+    container_name: discord-cleanup-bot
+    restart: unless-stopped
+    env_file:
+      - .env
+    volumes:
+      - ./data:/data

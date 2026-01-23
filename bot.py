@@ -6,26 +6,32 @@ import os
 import asyncio
 from datetime import datetime, timedelta, timezone
 
-# configuration, change these if necessary
+# load environment variables from .env file if present
+from dotenv import load_dotenv
+load_dotenv()
 
-CLEANUP_WAIT = 1 # hours
+# import logging
+# logging.basicConfig(level=logging.INFO)
+# logging.getLogger("discord").setLevel(logging.DEBUG)
+# logging.getLogger("discord.http").setLevel(logging.DEBUG)
 
-DELETE_AFTER_DAYS = 3 # days
-
-DELETE_DELAY = 1.2 # seconds
-
-FETCH_LIMIT = 200 # messages to fetch per loop, to avoid being rate limited
-
-CONFIG_FILE = "channelconfig.json"
-
-TOKENFILE = "/opt/botti/.token"
+# configuration via environment variables, with sane defaults
+CLEANUP_WAIT = int(os.getenv("CLEANUP_WAIT", "1"))  # hours
+DELETE_AFTER_DAYS = int(os.getenv("DELETE_AFTER_DAYS", "3"))  # days
+DELETE_DELAY = float(os.getenv("DELETE_DELAY", "1.2"))  # seconds
+FETCH_LIMIT = int(os.getenv("FETCH_LIMIT", "200"))  # messages to fetch per loop, to avoid being rate limited
+CONFIG_FILE = os.getenv("CONFIG_FILE", "./data/channels.json")
 
 # either read bot token from a file (which i do) or just add the token like this:
-# TOKEN = "your token here"
+TOKEN = os.getenv("TOKEN", "")
+TOKENFILE = os.getenv("TOKENFILE", "./.discord_token")
 
-with open(TOKENFILE, "r") as tokenfile:
-    TOKEN = tokenfile.read().strip()
+if not TOKEN and TOKENFILE:
+    with open(TOKENFILE, "r") as tokenfile:
+        TOKEN = tokenfile.read().strip()
 
+if not TOKEN:
+    raise RuntimeError("No TOKEN set. Provide TOKEN or TOKENFILE.")
 
 # discord bot shenanigans, dont touch
 
